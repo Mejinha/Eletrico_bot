@@ -62,7 +62,7 @@ def web_scrapping(start_date = 'today', offset = 8):
         dataraw['nuclear'][str(day)] = float(soup.select('#lbl_sin_nuclear_v')[0].text) * 24 * 1000
         dataraw['termo'][str(day)] = float(soup.select('#lbl_sin_termo_v')[0].text) * 24 * 1000
         dataraw['eolica'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24 * 1000
-        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24 * 1000
+        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_solar_v')[0].text) * 24 * 1000
         
     return dataraw
 
