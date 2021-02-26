@@ -57,12 +57,12 @@ def web_scrapping(start_date = 'today', offset = 8):
         soup = BeautifulSoup(response.content, 'html.parser')       
         
         #Criar dicionário por fontes
-        dataraw['hidro'][str(day)] = float(soup.select('#lbl_sin_hidro_v')[0].text) * 24 * 1000
-        dataraw['itaipu'][str(day)] = float(soup.select('#lbl_sin_itaipu_v')[0].text) * 24 * 1000
-        dataraw['nuclear'][str(day)] = float(soup.select('#lbl_sin_nuclear_v')[0].text) * 24 * 1000
-        dataraw['termo'][str(day)] = float(soup.select('#lbl_sin_termo_v')[0].text) * 24 * 1000
-        dataraw['eolica'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24 * 1000
-        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_solar_v')[0].text) * 24 * 1000
+        dataraw['hidro'][str(day)] = float(soup.select('#lbl_sin_hidro_v')[0].text.replace('.','')) * 24 
+        dataraw['itaipu'][str(day)] = float(soup.select('#lbl_sin_itaipu_v')[0].text.replace('.','')) * 24 
+        dataraw['nuclear'][str(day)] = float(soup.select('#lbl_sin_nuclear_v')[0].text.replace('.','')) * 24 
+        dataraw['termo'][str(day)] = float(soup.select('#lbl_sin_termo_v')[0].text.replace('.','')) * 24 
+        dataraw['eolica'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text.replace('.','')) * 24 
+        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_solar_v')[0].text.replace('.','')) * 24 
         
     return dataraw
 
