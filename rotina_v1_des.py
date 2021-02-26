@@ -57,12 +57,12 @@ def web_scrapping(start_date = 'today', offset = 8):
         soup = BeautifulSoup(response.content, 'html.parser')       
         
         #Criar dicionário por fontes
-        dataraw['hidro'][str(day)] = float(soup.select('#lbl_sin_hidro_v')[0].text) * 24
-        dataraw['itaipu'][str(day)] = float(soup.select('#lbl_sin_itaipu_v')[0].text) * 24
-        dataraw['nuclear'][str(day)] = float(soup.select('#lbl_sin_nuclear_v')[0].text) * 24
-        dataraw['termo'][str(day)] = float(soup.select('#lbl_sin_termo_v')[0].text) * 24
-        dataraw['eolica'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24
-        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24
+        dataraw['hidro'][str(day)] = float(soup.select('#lbl_sin_hidro_v')[0].text) * 24 * 1000
+        dataraw['itaipu'][str(day)] = float(soup.select('#lbl_sin_itaipu_v')[0].text) * 24 * 1000
+        dataraw['nuclear'][str(day)] = float(soup.select('#lbl_sin_nuclear_v')[0].text) * 24 * 1000
+        dataraw['termo'][str(day)] = float(soup.select('#lbl_sin_termo_v')[0].text) * 24 * 1000
+        dataraw['eolica'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24 * 1000
+        dataraw['solar'][str(day)] = float(soup.select('#lbl_sin_eolica_v')[0].text) * 24 * 1000
         
     return dataraw
 
@@ -171,7 +171,7 @@ def write_tweet(rate, emissions, dataframe):
         emoji_comparador = '😀'
         
     co2 = np.round(emissions[-1:].sum(axis = 1)[0], 0)
-    gwh = np.round(dataframe[-1:].sum(axis = 1)[0], 0)
+    gwh = np.round(dataframe[-1:].sum(axis = 1)[0] / 1000, 0)
 
     tweet = f"Emitimos {co2} toneladas de CO2 para gerar {gwh} GWh e acender o Brasil ontem!" + \
     f"\nIsso equivale a {percentual_semana}% {comparador} emissões que a média da última semana {emoji_seta}{emoji_comparador}"
@@ -209,7 +209,7 @@ def Run():
           'solar': 0,
           'eolica': 0,
           'nuclear': 0,
-          'termo': 0.231413}
+          'termo': 0.23}
     
     data = pd.DataFrame(web_scrapping('today', 8))
     emissions = emission_factor(data, fator)
@@ -217,8 +217,10 @@ def Run():
     rate = calculate_variation(emissions, medias)
     tweet = write_tweet(rate, emissions, data)
     print(tweet)
-    publish_tweet(tweet)    
+    publish_tweet(tweet)   
+    
+    return data, emissions
     
 if __name__ == '__main__':
     
-    Run()
+    data, emissions = Run()
